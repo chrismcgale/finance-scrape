@@ -24,7 +24,7 @@ puppeteer.launch({
     while (!endofentries) {
 
 
-        //Get tick from constiutuents.csv
+        //Get tick from constitutuents.csv
         var tick =;
 
         // go to the appropriate url
