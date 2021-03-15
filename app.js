@@ -1,8 +1,10 @@
 const puppeteer = require('puppeteer');
-const tools = require('./tools')
+const tools = require('./tools');
 
-var yahoo = "https://finance.yahoo.com/quote/"
-var street = "https://www.streetinsider.com/dividend_history.php?q="
+var yahoo = "https://finance.yahoo.com/quote/";
+var street = "https://www.streetinsider.com/dividend_history.php?q=";
+
+
 
 puppeteer.launch({
     executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
@@ -17,15 +19,13 @@ puppeteer.launch({
     // open file stream
     const fs = require('fs');
 
-    var csvCols = [];
+    var csvCols = $.csv.toArrays(constituents.csv);
 
-    // this does nothing atm
-    var endofentries = false;
-    while (!endofentries) {
-
-
-        //Get tick from constitutuents.csv
-        var tick =;
+    for(i = 0; i < csvCols.length() ; ++i) {
+        //Get tick from constituents.csv
+        var tick = csvCols[i];
+        console.log(tick);
+        //Just get ticker
 
         // go to the appropriate url
         try {
@@ -35,32 +35,6 @@ puppeteer.launch({
         }
 
 
-        var firstChar = split[1][0];
-        // if link is a valid address...
-        if (!used_urls.has(urls[i]) && firstChar >= '0' && firstChar <= '9') {
-            console.log(urls[i]);
-            console.log(i)
-            used_urls.add(urls[i]);
-
-            try {
-                await page.goto(urls[i], { waitUntil: 'networkidle2' });  // wait for no more than 2 network connections for 500ms    
-            } catch (err) {
-                throw new PageContactError("page ".concat(urls[i]).concat(" either doesn't exist or there's a network connection error"));
-            }
-
-
-            try {
-                await page.goto(urls[i], { waitUntil: 'networkidle2' });  // wait for no more than 2 network connections for 500ms    
-            } catch (err) {
-                throw new PageContactError("page ".concat(urls[i]).concat(" either doesn't exist or there's a network connection error"));
-            }
-
-            // await wait(150000);
-            // async function wait(ms) {
-            //     return new Promise(resolve => {
-            //         setTimeout(resolve, ms);
-            //     });
-            // }
 
             let pagedata = await page.evaluate(() => {
                 try {
@@ -73,19 +47,25 @@ puppeteer.launch({
                     columns.add('LTD'); //Long term dept
                     columns.add('NCA'); //Net current assets
 
-                    // get all the spans
-                    let spans = document.querySelectorAll('span[class="priv"]');
-
-                    let col_names = document.querySelectorAll('dt[class="column-label"]');
 
                     // Both on summary page
-                    let mrktCap = document.querySelector('section>h1').innerText; // data-reactid="85"
-                    let pe = spans[1].innerText; // data-reactid="95"
-                    // Rest are on balance sheet
+                    let mrktCap = document.querySelector("[data-test='MARKET-CAP-value']").children().innerText; // data-reactid="85"
+                    let pe = document.querySelector("[data-test='PE_RATIO-value']").children().innerText; // data-reactid="95"
+
+                    page.goto(yahoo.concat(tick.toString(10)).concat("/key-statistics?p=").concat(tick.toString(10)));
+                    //On statistics page
+                    let BV = document.querySelector("span:contains('Price/Book')").parent().parent().children(class).innerText;
+                    //Get value
+                    let CurrRatio = document.querySelector("span:contains('Current Ratio')");
+                    //Get value
+
+                    //Only on balance sheet
                     page.goto(yahoo.concat(tick.toString(10)).concat("/balance-sheet?p=").concat(tick.toString(10)));
-                    let currRatio = spans[0].innerText;
-                    let bv = spans[2].innerText;
-                    let ltd = spans[3].innerText;
+                    let longTermDebt = document.querySelectorAll("span:contains('Long Term Debt')");
+                    let last = longTermDebt[longTermDebt.length() - 1];
+                    let debt = last.parent().parent().parent().children("[data-test='fin-col']");
+                    let ltd = debt[0].children()[0].innerText
+                    // Make ltd last and next fin-col span value
                     let nca = spans[5].innerText; //Curr assets - Total Liabilities - Preferred Shares
 
                     // init return
@@ -104,18 +84,9 @@ puppeteer.launch({
                     return -1
                 }
             });
-            if (pagedata == -1) {
-                console.log(pagedata)
-                continue;
-            }
 
 
-            console.log(pagedata['address'])
-
-
-            pagedata['pageNum'] = pageNum;
             pagedata['iterationNum'] = i;
-            pagedata['weblink'] = urls[i]
             console.log(pagedata);
 
 
@@ -138,7 +109,6 @@ puppeteer.launch({
                 csvCols = [];
             }
 
-        }
 
         try {
             await page.goto(street.concat(tick.toString(10))); // Do I need toString?
