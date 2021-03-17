@@ -2,8 +2,9 @@ const puppeteer = require('puppeteer');
 const tools = require('./tools');
 const { clearLine } = require('readline');
 
-var yahoo = "https://www.nasdaq.com/market-activity/stocks/";
+var yahoo = "https://finance.yahoo.com/quote/";
 var nasdaq = "https://www.nasdaq.com/market-activity/stocks/";
+var earnings = "https://www.macrotrends.net/stocks/charts/;
 
 
 
@@ -49,15 +50,16 @@ puppeteer.launch({
                 columns.add('NCA'); //Net current assets
 
 
-                // Both on summary page
-                let mrktCap = document.querySelector("[data-test='MARKET-CAP-value']").children().innerText; // data-reactid="85"
-                let pe = document.querySelector("[data-test='PE_RATIO-value']").children().innerText; // data-reactid="95"
+                // Both on summary page PE not right yet
+                await page.waitFor('#quote-market-notice', {timeout: 1000});
+                let mrktCap = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr > td.Ta\\(end\\) > span").textContent;
+                let pe = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr:nth-child(3) > td.Ta\\(end\\) > span").textContent;
 
                 page.goto(yahoo.concat(tick.toString(10)).concat("/key-statistics?p=").concat(tick.toString(10)));
                 //On statistics page
-                let BV = document.querySelector("span:contains('Price/Book')").parent().parent().children(class).innerText;
+                let BV = document.querySelector("span:contains('Price/Book')").parentNode.parentNode.childNodes[1].innerText;
                 //Get value
-                let CurrRatio = document.querySelector("span:contains('Current Ratio')");
+                let CurrRatio = document.querySelector("span:contains('Current Ratio')").parentNode.parentNode.childNodes[1].innerText;
                 //Get value
 
                 //Only on balance sheet
@@ -138,19 +140,24 @@ puppeteer.launch({
             }
         }
 
+        //Name needs dashes instead of spaces
+        try {
+            await page.goto(earnings.concat(tick.toString(10 + "/")).concat(company.toString()).concat("/eps-earnings-per-share-diluted"));
+        } catch (err) {
+            throw new PageContactError("Ticker ".concat(tick).concat(" dose not exist"));
+        }
+
         //Increase in 3 year average EPS by at least 1/3
-        //until I can find a reliable site for EPS I will operate under the (sadly not always accurate)
-        //Assumption that an increase in EPS results in a uniform increase in dividends and test
-        //whether Dividends have increased by 1/3
-        let eps = document.querySelectorAll(".dividend-history__cell dividend-history__cell--amount").innerText;
+        //Returns list of year, eps
+        let eps = document.querySelector(".historical_data_table table").children(tbody).children(tr).children(td).innerText;
         let recent = 0;
-        for(m = 0; m < 12; ++m){
+        for(m = 1; m < 7; m += 2){
             recent += eps[m];
         }
         recent /= 12;
 
         let past = 0;
-        for(m = 40; m < 52; ++m){
+        for(m = 20; m < 28; m += 2){
             past += eps[m];
         }
         past /= 12;
