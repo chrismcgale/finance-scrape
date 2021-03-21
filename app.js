@@ -4,7 +4,7 @@ const { clearLine } = require('readline');
 
 var yahoo = "https://finance.yahoo.com/quote/";
 var nasdaq = "https://www.nasdaq.com/market-activity/stocks/";
-var earnings = "https://www.macrotrends.net/stocks/charts/;
+var earnings = "https://www.macrotrends.net/stocks/charts/";
 
 
 
@@ -38,7 +38,7 @@ puppeteer.launch({
 
 
 
-        let pagedata = await page.evaluate(() => {
+        let frst = await page.evaluate(() => {
             try {
                 // Set of data needed from Yahoo
                 const columns = new Set();
@@ -50,26 +50,26 @@ puppeteer.launch({
                 columns.add('NCA'); //Net current assets
 
 
-                // Both on summary page PE not right yet
                 await page.waitFor('#quote-market-notice', {timeout: 1000});
+                //Both on main
                 let mrktCap = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr > td.Ta\\(end\\) > span").textContent;
                 let pe = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr:nth-child(3) > td.Ta\\(end\\) > span").textContent;
 
                 page.goto(yahoo.concat(tick.toString(10)).concat("/key-statistics?p=").concat(tick.toString(10)));
+                await page.waitFor('#quote-market-notice', {timeout: 1000});
                 //On statistics page
-                let BV = document.querySelector("span:contains('Price/Book')").parentNode.parentNode.childNodes[1].innerText;
-                //Get value
-                let CurrRatio = document.querySelector("span:contains('Current Ratio')").parentNode.parentNode.childNodes[1].innerText;
-                //Get value
+                let BV = document.querySelector("table > tbody > tr:nth-child(7) > td:nth-child(2)").textContent;
 
-                //Only on balance sheet
+                let CurrRatio = document.querySelector("tbody:nth-child(9) > tr:nth-child(5) > td:nth-child(2)").textContent;
+                //Curr returns Null still
+
+                //Remove stats from url?
                 page.goto(yahoo.concat(tick.toString(10)).concat("/balance-sheet?p=").concat(tick.toString(10)));
-                let longTermDebt = document.querySelectorAll("span:contains('Long Term Debt')");
-                let last = longTermDebt[longTermDebt.length() - 1];
-                let debt = last.parent().parent().parent().children("[data-test='fin-col']");
-                let ltd = debt[0].children()[0].innerText
-                // Make ltd last and next fin-col span value
-                let nca = spans[5].innerText; //Curr assets - Total Liabilities - Preferred Shares
+                //Only on balance sheet
+                let ltd = document.querySelectorAll('[title="Long Term Debt"]').parentElement.nextSibling.textContent;
+
+                let CurrAssets = document.querySelectorAll('[title="Total Current Assets"]').parentElement.nextSibling.textContent;
+                //nca = Curr assets - Total Liabilities - Preferred Shares
 
                 // init return
                 obj =
@@ -89,28 +89,16 @@ puppeteer.launch({
         });
 
 
-        pagedata['iterationNum'] = i;
-        console.log(pagedata);
+        first['iterationNum'] = i;
+        console.log(first);
 
 
         // convert json to string
-        pagedata = JSON.stringify(pagedata);
+        first = JSON.stringify(pagedata);
 
         // save json object to data folder
 
-        csvCols.push(pagedata);
-
-        if (csvCols.length >= MAXCOLS) {
-
-            let string = "";
-            for (var z = 0; z < csvCols.length; z++) string += csvCols[z] + '\n';
-
-            fs.appendFile('../Data/data.txt', string, function (err) {
-                if (err) throw err;
-                console.log('Saved!');
-            });
-            csvCols = [];
-        }
+        csvCols.push(first);
 
 
         try {
@@ -118,7 +106,7 @@ puppeteer.launch({
         } catch (err) {
             throw new PageContactError("Ticker ".concat(tick).concat(" dose not exist"));
         }
-        let uninterupt = true;
+        let un = true;
         let growth = true;
 
 
@@ -126,15 +114,16 @@ puppeteer.launch({
         //20 years uninterupted dividends
         //If too strict maybe just once per year
         let divs = document.querySelectorAll(".dividend-history__cell").innerText;
+        //Current year
         let year = 21;
-        //update every 4 months
+        //update every 4 months, denotes how many divs should have been paid this year
         let period = 1;
 
         for (j = 0; j < 20; ++j) {
             for (k = 1; k < 5; ++k) {
                 let test = year - j - ceiling((k - period) / 4);
                 if (divs[j * 4 + k].slice(-2) != test) {
-                    uninterupt = false;
+                    un = false;
                     break;
                 }
             }
@@ -164,6 +153,16 @@ puppeteer.launch({
 
         //Should be inflation adjusted, is not for now
         if( recent < past * 4 / 3) growth = false;
+
+
+        let string = "";
+        for (var z = 0; z < csvCols.length; z++) string += csvCols[z] + '\n';
+
+        fs.appendFile('../Data/data.txt', string, function (err) {
+        if (err) throw err;
+            console.log('Saved!');
+        });
+        csvCols = [];
 
 
         await browser.close();
