@@ -107,7 +107,6 @@ puppeteer.launch({
             throw new PageContactError("Ticker ".concat(tick).concat(" dose not exist"));
         }
         let un = true;
-        let growth = true;
 
 
 
@@ -138,21 +137,30 @@ puppeteer.launch({
 
         //Increase in 3 year average EPS by at least 1/3
         //Returns list of year, eps
-        let eps = document.querySelector(".historical_data_table table").children(tbody).children(tr).children(td).innerText;
+        let eps = document.querySelectorAll('table > tbody > tr > td:nth-child(2)');
+        //NOTE: eps is in format $X.XX
+        let growth = true;
+        
         let recent = 0;
-        for(m = 1; m < 7; m += 2){
-            recent += eps[m];
+        for(m = 0; m < 3; m += 1){
+            recent += eps[m].textContent;
         }
-        recent /= 12;
+        recent /= 3;
 
         let past = 0;
-        for(m = 20; m < 28; m += 2){
+        for(m = 8; m < 11; m += 1){
             past += eps[m];
         }
-        past /= 12;
+        past /= 3;
 
         //Should be inflation adjusted, is not for now
         if( recent < past * 4 / 3) growth = false;
+
+
+        let positive = true;
+        for(m = 0; m < 10; m += 1){
+            if (eps[m] < 0) positive = false;
+        }
 
 
         let string = "";
