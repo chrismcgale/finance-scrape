@@ -45,16 +45,12 @@ puppeteer.launch({
         let company = companies[i].replace(/\s/g, '-');
         console.log(tick);
         console.log(company);
-        //Just get ticker
 
-        // go to the appropriate url
         try {
             await page.goto(yahoo.concat(tick));
         } catch (err) {
             throw new PageContactError("Ticker ".concat(tick).concat(" dose not exist"));
         }
-
-
 
         let first = await page.evaluate(() => {
             try {
@@ -63,7 +59,7 @@ puppeteer.launch({
                 const columns = new Set();
                 columns.add('Market_Cap');
                 columns.add('Current_Ratio');
-                columns.add('P/E');
+                columns.add('P/E'); //Price to Earnings
                 columns.add('BV'); //Book value
                 columns.add('LTD'); //Long term dept
                 columns.add('NCA'); //Net current assets
@@ -107,33 +103,19 @@ puppeteer.launch({
             }
         });
 
-
-        first['iterationNum'] = i;
-        console.log(first);
-
-
-        // convert json to string
-        first = JSON.stringify(pagedata);
-
-        // save json object to data folder
-
-        csvCols.push(first);
-
-
         try {
             await page.goto(nasdaq.concat(tick.toString(10)).concat("/dividend-history")); // Do I need toString?
         } catch (err) {
             throw new PageContactError("Ticker ".concat(tick).concat(" dose not exist"));
         }
-        let un = true;
-
-
 
         //20 years uninterupted dividends
         //If too strict maybe just once per year
         let nodes = document.querySelectorAll(".dividend-history__cell");
         var list = [].slice.call(nodes);
         var divs = list.map(function (e) { return e.innerText; }).join("\n");
+        let un = true;
+
         //Current year
         let year = 21;
         //update every 4 months, denotes how many divs should have been paid this year
@@ -160,10 +142,15 @@ puppeteer.launch({
         let eps = document.querySelectorAll('table > tbody > tr > td:nth-child(2)');
         //NOTE: eps is in format $X.XX
         let growth = true;
+        let positive = true;
+
+        for (j = 0; j < 10; j += 1) {
+            eps[j] = parseFloat(eps[m].substring(1));
+            if (eps[j] < 0) positive = false;
+        }
 
         let recent = 0;
         for (m = 0; m < 3; m += 1) {
-            eps[m] = parseFloat(eps[m].substring(1));
             recent += eps[m];
         }
         recent /= 3;
@@ -178,20 +165,6 @@ puppeteer.launch({
         //Should be inflation adjusted, is not for now
         if (recent < past * 4 / 3) growth = false;
 
-
-        let positive = true;
-        for (j = 0; j < 10; j += 1) {
-            if (eps[j] < 0) positive = false;
-        }
-
-
-        let string = "";
-        for (var z = 0; z < csvCols.length; z++) string += csvCols[z] + '\n';
-
-        /*fs.appendFile('../Data/data.txt', string, function (err) {
-            if (err) throw err;
-            console.log('Saved!');
-        });*/
         csvCols = [];
 
 
