@@ -2,3 +2,9 @@ Company Name, Market Cap, Current Ratio, P/E, P/B, LTD, NCA, LTD, Earnings, Grow
 Tesla, 700B, 1.5, 20, 10, 15000, 100000, true, true, false
 Apple, 1T, 0.2, 300, 20, -10000, 100, false, false, false
 Microsoft, 200M, 0.001, 20000, 2000, 100000, -100, true, true, true
+
+Market Cap >= 10B
+Curr Ratio >= 2
+P/E <= 15
+P/B <= 22.5
+Long term debt <= NCA
