@@ -24,8 +24,9 @@ puppeteer.launch({
     var csvCols = $.csv.toArrays(constituents.csv);
 
     for (i = 0; i < csvCols.length(); ++i) {
-        //Get tick from constituents.csv
-        var tick = csvCols[i];
+        //Get tick and company name from constituents.csv
+        let tick = csvCols[i];
+        let company = csvCols[i].replace(/\s/g, '-');
         console.log(tick);
         //Just get ticker
 
@@ -50,7 +51,7 @@ puppeteer.launch({
                 columns.add('NCA'); //Net current assets
 
 
-                await page.waitFor('#quote-market-notice', {timeout: 1000});
+                page.waitFor('#quote-market-notice', {timeout: 1000});
                 //Both on main
                 let mrktCap = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr > td.Ta\\(end\\) > span").textContent;
                 let pe = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr:nth-child(3) > td.Ta\\(end\\) > span").textContent;
@@ -112,7 +113,9 @@ puppeteer.launch({
 
         //20 years uninterupted dividends
         //If too strict maybe just once per year
-        let divs = document.querySelectorAll(".dividend-history__cell").innerText;
+        let nodes = document.querySelectorAll(".dividend-history__cell");
+        var list = [].slice.call(nodes);
+        var divs = list.map(function(e) { return e.innerText; }).join("\n");
         //Current year
         let year = 21;
         //update every 4 months, denotes how many divs should have been paid this year
@@ -128,9 +131,8 @@ puppeteer.launch({
             }
         }
 
-        //Name needs dashes instead of spaces
         try {
-            await page.goto(earnings.concat(tick.toString(10 + "/")).concat(company.toString()).concat("/eps-earnings-per-share-diluted"));
+            await page.goto(earnings.concat(tick.toString() + "/").concat(company.toString()).concat("/eps-earnings-per-share-diluted"));
         } catch (err) {
             throw new PageContactError("Ticker ".concat(tick).concat(" dose not exist"));
         }
@@ -143,13 +145,15 @@ puppeteer.launch({
         
         let recent = 0;
         for(m = 0; m < 3; m += 1){
-            recent += eps[m].textContent;
+            eps[m] = parseFloat(eps[m].substring(1));
+            recent += eps[m];
         }
         recent /= 3;
 
         let past = 0;
-        for(m = 8; m < 11; m += 1){
-            past += eps[m];
+        for(l = 8; l < 11; l += 1){
+            eps[l] = parseFloat(eps[l].substring(1));
+            past += eps[l];
         }
         past /= 3;
 
@@ -158,8 +162,8 @@ puppeteer.launch({
 
 
         let positive = true;
-        for(m = 0; m < 10; m += 1){
-            if (eps[m] < 0) positive = false;
+        for(j = 0; j < 10; j += 1){
+            if (eps[j] < 0) positive = false;
         }
 
 
