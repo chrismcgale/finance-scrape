@@ -1,5 +1,7 @@
+const fs = require('fs');
+const $ = require('jquery');
 const puppeteer = require('puppeteer');
-const tools = require('./tools');
+const csv = require('csv-parser')
 const { clearLine } = require('readline');
 
 var yahoo = "https://finance.yahoo.com/quote/";
@@ -7,9 +9,24 @@ var nasdaq = "https://www.nasdaq.com/market-activity/stocks/";
 var earnings = "https://www.macrotrends.net/stocks/charts/";
 
 
+// open file stream
+const csvToArrays = (filename) => {
+    let data = [];
+    let readStream = fs.createReadStream(filename)
+        .pipe(csv())
+        .on('data', (row) => {
+            console.log(data.length);
+            data.push(row.Symbol);
+            data.push(row.Name);
+        })
+        .on('end', () => {
+            console.log('CSV file successfully processed');
+            return data;
+        });
+}
+
 
 puppeteer.launch({
-    executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     headless: true,
     userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36",
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080']
@@ -18,30 +35,30 @@ puppeteer.launch({
     // create new page
     const page = await browser.newPage();
 
-    // open file stream
-    const fs = require('fs');
+    let csvCols = csvToArrays('./constituents.csv');
 
-    var csvCols = $.csv.toArrays(constituents.csv);
+    console.log(csvCols.length);
 
-    for (i = 0; i < csvCols.length(); ++i) {
+    for (i = 0; i < tickers.length; ++i) {
         //Get tick and company name from constituents.csv
-        let tick = csvCols[i];
-        let company = csvCols[i].replace(/\s/g, '-');
+        let tick = tickers[i];
+        let company = companies[i].replace(/\s/g, '-');
         console.log(tick);
+        console.log(company);
         //Just get ticker
 
         // go to the appropriate url
         try {
-            await page.goto(yahoo.concat(tick.toString(10))); // Do I need toString?
+            await page.goto(yahoo.concat(tick));
         } catch (err) {
             throw new PageContactError("Ticker ".concat(tick).concat(" dose not exist"));
         }
 
 
 
-        let frst = await page.evaluate(() => {
-            try { 
-                page.waitFor('#quote-market-notice', {timeout: 1000});
+        let first = await page.evaluate(() => {
+            try {
+                page.waitFor('#quote-market-notice', { timeout: 1000 });
                 // Set of data needed from Yahoo
                 const columns = new Set();
                 columns.add('Market_Cap');
@@ -52,13 +69,13 @@ puppeteer.launch({
                 columns.add('NCA'); //Net current assets
 
 
-                
+
                 //Both on main
                 let mrktCap = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr > td.Ta\\(end\\) > span").textContent;
                 let pe = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr:nth-child(3) > td.Ta\\(end\\) > span").textContent;
 
                 page.goto(yahoo.concat(tick.toString(10)).concat("/key-statistics?p=").concat(tick.toString(10)));
-                await page.waitFor('#quote-market-notice', {timeout: 1000});
+                page.waitFor('#quote-market-notice', { timeout: 1000 });
                 //On statistics page
                 let BV = document.querySelector("table > tbody > tr:nth-child(7) > td:nth-child(2)").textContent;
 
@@ -116,7 +133,7 @@ puppeteer.launch({
         //If too strict maybe just once per year
         let nodes = document.querySelectorAll(".dividend-history__cell");
         var list = [].slice.call(nodes);
-        var divs = list.map(function(e) { return e.innerText; }).join("\n");
+        var divs = list.map(function (e) { return e.innerText; }).join("\n");
         //Current year
         let year = 21;
         //update every 4 months, denotes how many divs should have been paid this year
@@ -143,27 +160,27 @@ puppeteer.launch({
         let eps = document.querySelectorAll('table > tbody > tr > td:nth-child(2)');
         //NOTE: eps is in format $X.XX
         let growth = true;
-        
+
         let recent = 0;
-        for(m = 0; m < 3; m += 1){
+        for (m = 0; m < 3; m += 1) {
             eps[m] = parseFloat(eps[m].substring(1));
             recent += eps[m];
         }
         recent /= 3;
 
         let past = 0;
-        for(l = 8; l < 11; l += 1){
+        for (l = 8; l < 11; l += 1) {
             eps[l] = parseFloat(eps[l].substring(1));
             past += eps[l];
         }
         past /= 3;
 
         //Should be inflation adjusted, is not for now
-        if( recent < past * 4 / 3) growth = false;
+        if (recent < past * 4 / 3) growth = false;
 
 
         let positive = true;
-        for(j = 0; j < 10; j += 1){
+        for (j = 0; j < 10; j += 1) {
             if (eps[j] < 0) positive = false;
         }
 
@@ -171,18 +188,19 @@ puppeteer.launch({
         let string = "";
         for (var z = 0; z < csvCols.length; z++) string += csvCols[z] + '\n';
 
-        fs.appendFile('../Data/data.txt', string, function (err) {
-        if (err) throw err;
+        /*fs.appendFile('../Data/data.txt', string, function (err) {
+            if (err) throw err;
             console.log('Saved!');
-        });
+        });*/
         csvCols = [];
 
 
         await browser.close();
+    }
 
-    }).catch(function (error) {
-        console.error(error);
-    });
+}).catch(function (error) {
+    console.error(error);
+});
 
 
 // Error classes 
