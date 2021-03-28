@@ -40,7 +40,8 @@ puppeteer.launch({
 
 
         let frst = await page.evaluate(() => {
-            try {
+            try { 
+                page.waitFor('#quote-market-notice', {timeout: 1000});
                 // Set of data needed from Yahoo
                 const columns = new Set();
                 columns.add('Market_Cap');
@@ -51,7 +52,7 @@ puppeteer.launch({
                 columns.add('NCA'); //Net current assets
 
 
-                page.waitFor('#quote-market-notice', {timeout: 1000});
+                
                 //Both on main
                 let mrktCap = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr > td.Ta\\(end\\) > span").textContent;
                 let pe = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr:nth-child(3) > td.Ta\\(end\\) > span").textContent;
