@@ -27,7 +27,7 @@ function clear(filename) {
     fs.writeFile('./data.csv', '', function (err) {
         if (err) throw err;
     });
-    let string="Name,Market-Cap,Price-to-Earnings,Price-to-Book,Current-Ratio,Financial-Position,Ten-year-growth,No-Earnings-Deficit-in-the-Past-Ten-Years";
+    let string="Name,Market-Cap,Price-to-Earnings,Price-to-Book,Current-Ratio,Financial-Position,Ten-year-growth,No-Earnings-Deficit" + '\n';
     fs.appendFile('./data.csv', string, function (err) {
         if (err) throw err;
     });
