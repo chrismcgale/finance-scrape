@@ -11,7 +11,7 @@ var earnings = "https://www.macrotrends.net/stocks/charts/";
 
 function write_to_file(data) {
     string = "";
-    for (var it = 0; it < 7; ++it) {
+    for (var it = 0; it < 5; ++it) {
         if( it == 6 ) string += data[it];
          else string += data[it] + ',';
     }
@@ -50,6 +50,7 @@ function clear(filename) {
 
         // create new page
         const page = await browser.newPage();
+        page.setDefaultNavigationTimeout(0); 
         page.on('console', consoleObj => console.log(consoleObj.text()));
 
         for (i = 0; i < tickers.length; i += 2) {
@@ -66,7 +67,7 @@ function clear(filename) {
             }
 
             let first = await page.evaluate(() => {
-                //Both on main
+                //Both on summary page
                 let mrktCap = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr > td.Ta\\(end\\) > span").textContent;
                 let pe = document.querySelector("#quote-summary > div.Pstart\\(12px\\) > table > tbody > tr:nth-child(3) > td.Ta\\(end\\) > span").textContent;
                 return [mrktCap, pe];
@@ -74,27 +75,32 @@ function clear(filename) {
 
             await page.goto(yahoo.concat(tick.toString(10)).concat("/key-statistics?p=").concat(tick.toString(10)));
 
+
             let second = await page.evaluate(() => {
 
-                 //page.waitFor('#quote-market-notice', { timeout: 1000 });
                  //On statistics page
-                // let BV = document.querySelector("table > tbody > tr:nth-child(7) > td:nth-child(2)").textContent;
-               //  let CurrRatio = document.querySelector("tbody:nth-child(9) > tr:nth-child(5) > td:nth-child(2)").textContent;
-                 //Curr returns Null still
-                 return [0, 0];
+                 let PBV = document.querySelector("table > tbody > tr:nth-child(7) > td:nth-child(2)").textContent;
+                 let CurrRatio = document.querySelector("#Col1-0-KeyStatistics-Proxy > section > div.Mstart\\(a\\).Mend\\(a\\) > div:nth-child(3) > div > div:nth-child(5) > div > div > table > tbody > tr:nth-child(5) > td.Fw\\(500\\).Ta\\(end\\).Pstart\\(10px\\).Miw\\(60px\\)").innerText;
+                 return [PBV, CurrRatio];
              }); 
 
-            //Remove stats from url?
             await page.goto(yahoo.concat(tick.toString(10)).concat("/balance-sheet?p=").concat(tick.toString(10)));
+            //Total Assets
+            await page.click("#Col1-1-Financials-Proxy > section > div.Pos\\(r\\) > div.W\\(100\\%\\).Whs\\(nw\\).Ovx\\(a\\).BdT.Bdtc\\(\\$seperatorColor\\) > div > div.D\\(tbrg\\) > div:nth-child(1) > div.D\\(tbr\\).fi-row.Bgc\\(\\$hoverBgColor\\)\\:h > div.D\\(tbc\\).Ta\\(start\\).Pend\\(15px\\)--mv2.Pend\\(10px\\).Bxz\\(bb\\).Py\\(8px\\).Bdends\\(s\\).Bdbs\\(s\\).Bdstarts\\(s\\).Bdstartw\\(1px\\).Bdbw\\(1px\\).Bdendw\\(1px\\).Bdc\\(\\$seperatorColor\\).Pos\\(st\\).Start\\(0\\).Bgc\\(\\$lv2BgColor\\).fi-row\\:h_Bgc\\(\\$hoverBgColor\\).Pstart\\(15px\\)--mv2.Pstart\\(10px\\) > div.D\\(ib\\).Va\\(m\\).Ell.Mt\\(-3px\\).W\\(215px\\)--mv2.W\\(200px\\).undefined > button");
+            //Total Liabilities
+            await page.click("#Col1-1-Financials-Proxy > section > div.Pos\\(r\\) > div.W\\(100\\%\\).Whs\\(nw\\).Ovx\\(a\\).BdT.Bdtc\\(\\$seperatorColor\\) > div > div.D\\(tbrg\\) > div:nth-child(2) > div.D\\(tbr\\).fi-row.Bgc\\(\\$hoverBgColor\\)\\:h > div.D\\(tbc\\).Ta\\(start\\).Pend\\(15px\\)--mv2.Pend\\(10px\\).Bxz\\(bb\\).Py\\(8px\\).Bdends\\(s\\).Bdbs\\(s\\).Bdstarts\\(s\\).Bdstartw\\(1px\\).Bdbw\\(1px\\).Bdendw\\(1px\\).Bdc\\(\\$seperatorColor\\).Pos\\(st\\).Start\\(0\\).Bgc\\(\\$lv2BgColor\\).fi-row\\:h_Bgc\\(\\$hoverBgColor\\).Pstart\\(15px\\)--mv2.Pstart\\(10px\\) > div.D\\(ib\\).Va\\(m\\).Ell.Mt\\(-3px\\).W\\(215px\\)--mv2.W\\(200px\\).undefined > button");
+            //Total Non Current Liabilities
+            await page.click("#Col1-1-Financials-Proxy > section > div.Pos\\(r\\) > div.W\\(100\\%\\).Whs\\(nw\\).Ovx\\(a\\).BdT.Bdtc\\(\\$seperatorColor\\) > div > div.D\\(tbrg\\) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div.D\\(tbr\\).fi-row.Bgc\\(\\$hoverBgColor\\)\\:h > div.D\\(tbc\\).Ta\\(start\\).Pend\\(15px\\)--mv2.Pend\\(10px\\).Bxz\\(bb\\).Py\\(8px\\).Bdends\\(s\\).Bdbs\\(s\\).Bdstarts\\(s\\).Bdstartw\\(1px\\).Bdbw\\(1px\\).Bdendw\\(1px\\).Bdc\\(\\$seperatorColor\\).Pos\\(st\\).Start\\(0\\).Bgc\\(\\$lv2BgColor\\).fi-row\\:h_Bgc\\(\\$hoverBgColor\\).Pstart\\(30px\\)--mv2.Pstart\\(25px\\) > div.D\\(ib\\).Va\\(m\\).Ell.Mt\\(-3px\\).W\\(200px\\)--mv2.W\\(185px\\).undefined > button");
 
             let third = await page.evaluate(() => {
                 //Only on balance sheet
-                //let ltd = document.querySelectorAll('[title="Long Term Debt"]').parentElement.nextSibling.textContent;
-                //let CurrAssets = document.querySelectorAll('[title="Total Current Assets"]').parentElement.nextSibling.textContent;
-                //nca = Curr assets - Total Liabilities - Preferred Shares
-               // console.log(ltd)
-              //  console.log(CurrAssets)
-                return [0];
+                let ltd = document.querySelector("#Col1-1-Financials-Proxy > section > div.Pos\\(r\\) > div.W\\(100\\%\\).Whs\\(nw\\).Ovx\\(a\\).BdT.Bdtc\\(\\$seperatorColor\\) > div > div.D\\(tbrg\\) > div:nth-child(2) > div:nth-child(2) > div.rw-expnded > div:nth-child(2) > div:nth-child(1) > div.D\\(tbr\\).fi-row.Bgc\\(\\$hoverBgColor\\)\\:h > div:nth-child(2)").innerText;
+                let currAssets = document.querySelector("#Col1-1-Financials-Proxy > section > div:nth-child(3) > div > div > div:nth-child(2) > div div:nth-child(2) > div > div > div:nth-child(2)").innerText;
+                let totalLia = document.querySelector("#Col1-1-Financials-Proxy > section > div.Pos\\(r\\) > div.W\\(100\\%\\).Whs\\(nw\\).Ovx\\(a\\).BdT.Bdtc\\(\\$seperatorColor\\) > div > div.D\\(tbrg\\) > div:nth-child(3) > div.D\\(tbr\\).fi-row.Bgc\\(\\$hoverBgColor\\)\\:h > div:nth-child(2)").innerText;
+                let nca = currAssets - totalLia;
+                console.log(ltd)
+                //console.log(nca)
+                return [ltd, currAssets, nca]
             });
 
             try {
