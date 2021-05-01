@@ -56,7 +56,7 @@ function sleep(ms) {
         });
 
 
-    for (var iteration = 40; iteration < 1000; iteration += 20) {
+    for (var iteration = 0; iteration < 1000; iteration += 20) {
 
         await puppeteer.launch({
             headless: false,
