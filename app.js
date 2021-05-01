@@ -27,6 +27,10 @@ function clear(filename) {
     fs.writeFile('./data.csv', '', function (err) {
         if (err) throw err;
     });
+    let string="Name,Market Cap,Price to Earnings,Price to Book,Current Ratio,Financial Position,Ten-year growth,No Earnings Deficit in the Past Ten Years";
+    fs.appendFile('./data.csv', string, function (err) {
+        if (err) throw err;
+    });
 }
 
 function sleep(ms) {
@@ -37,7 +41,8 @@ function sleep(ms) {
 
 (async function main() {
     // open file stream
-   // clear('./data');
+
+    clear('./data');
     let tickers = [];
     let readStream = fs.createReadStream(fortunes)
         .pipe(csvParser())
