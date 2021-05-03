@@ -1,4 +1,4 @@
-Name,Market-Cap,Price-to-Earnings,Price-to-Book,Current-Ratio,Financial-Position,Uninterupted-Divs,Ten-year-growth,No-Earnings-Deficit
+Name,Market_Cap,Price_to_Earnings,Price_to_Book,Current_Ratio,Financial_Position,Uninterupted_Divs,Ten_year_growth,No_Earnings_Deficit
 3M Company,114.277B,20.17,8.31,1.84,false,true,true,true
 A.O. Smith Corp,10.947B,28.22,5.96,1.86,true,false,true,true
 Abbott Laboratories,212.725B,37.62,6.49,N/A,false,false,false,true
