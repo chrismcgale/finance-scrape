@@ -43,7 +43,10 @@ function sleep(ms) {
 (async function main() {
     // open file stream
 
+    //If Starting from the middle comment out this line and set i to 2 * row - 4
     //clear('./data');
+
+
     let tickers = [];
     let readStream = fs.createReadStream(fortunes)
         .pipe(csvParser())
@@ -67,7 +70,7 @@ function sleep(ms) {
             page.setDefaultNavigationTimeout(30000);
             page.on('console', consoleObj => console.log(consoleObj.text()));
 
-            for (i = 1000; i < 1010; i += 2) {
+            for (i = 0; i < 1010; i += 2) {
                 try {
                     //Get tick and company name from constituents.csv
                     let tick = tickers[i].replace('.', '-');
