@@ -10,14 +10,13 @@ to companies with at least a 50 miilion market cap. To adjust for inflation we w
 345 million USD.
 
 2. A Sufficiently Strong Financial Condition - This is a difficult figure to clasify but Graham settles that if an industrial
-company has a current ratio of at least 2, and all companies should have a long term debt not exceeding their net working capital
-(NWC defined as current assets - current liabilities)
+company has a current ratio of at least 2, and all companies should have a long term debt not exceeding their net working capital (NWC defined as current assets - current liabilities). A nwc greater than long term debt suggests that in the case of liquidation, there will be some asssets left over for the common stock.
 
 3. Earnings Stability - Some earnings for the common stock in each of the past 10 years.
 
 4. Dividend Record - Uninterupted payments for at least the past 20 years.
 
-5. Earnings growth - A minimum growth of 33% in earnings per share in the past 10 years (Using a 3 year average)
+5. Earnings growth - A minimum growth of 33% in earnings per share in the past 10 years (Using a 3 year average).
 
 6. Moderate Price/Earnings Ratio - Current Price should be no more than 15 times average earnings.
 
