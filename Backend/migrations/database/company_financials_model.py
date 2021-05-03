@@ -25,7 +25,8 @@ class CompanyFinancialsModel(BaseModel):
         super().__init__() # call db_interface constructor
         if not migration and date is not None and data is not None:
             self.columns['Name'] = Name
-            self.columns['Market_Cap'] = Price_to_Earnings
+            self.columns['Market_Cap'] = Market_Cap
+            self.columns['Price_To_Earnings'] = Price_to_Earnings
             self.columns['Price_to_Book'] = Price_to_Book
             self.columns['Current_Ratio'] = Current_Ratio
             self.columns['NWC_Gt_LTD'] = Financial_Position
