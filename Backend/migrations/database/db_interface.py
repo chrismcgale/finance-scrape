@@ -1,14 +1,13 @@
 import json 
 import mysql.connector
 
-
 class DBInterface: 
     def __init__(self):
         self._start_db_engine()
 
     def _start_db_engine(self):
         print("Initializing DB interface ... ")
-        with open("database/db_credentials.json") as f:
+        with open("Backend.migrations.database.db_credentials.json") as f:
             data = json.load(f)
         
         self.cnx = mysql.connector.connect(user=data['user'], password=data['password'],
