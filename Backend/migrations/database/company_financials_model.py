@@ -11,6 +11,7 @@ class CompanyFinancialsModel(BaseModel):
         "  `Price_to_Book` FLOAT(10,4),"
         "  `Current_Ratio` FLOAT(10,4),"
         "  `Financial_Position` BOOLEAN,"
+        "  `Uninterupted_Divs` BOOLEAN,"
         "  `Ten_year_growth` BOOLEAN,"
         "  `No_Earnings_Deficit_in_the_Past_Ten_Years` BOOLEAN,"
         "  PRIMARY KEY (`Name`)"
@@ -28,6 +29,7 @@ class CompanyFinancialsModel(BaseModel):
             self.columns['Price_to_Book'] = Price_to_Book
             self.columns['Current_Ratio'] = Current_Ratio
             self.columns['Financial_Position'] = Financial_Position
+            self.columns['Univterupted_Divs'] = Univterupted_Divs
             self.columns['Ten_year_growth'] = Ten_year_growth
             self.columns['No_Earnings_Deficit_in_the_Past_Ten_Years'] = No_Earnings_Deficit_in_the_Past_Ten_Years
 
