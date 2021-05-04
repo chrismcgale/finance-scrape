@@ -1,5 +1,6 @@
 mysql-connector-python
 Flask==1.1.2
+flask-cors
 python-dotenv
 waitress
 flask-cors
