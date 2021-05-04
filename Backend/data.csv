@@ -1,4 +1,4 @@
-Name,Market_Cap,Price_to_Earnings,Price_to_Book,Current_Ratio,Financial_Position,Uninterupted_Divs,Ten_year_growth,No_Earnings_Deficit
+Name,Market-Cap,Price-to-Earnings,Price-to-Book,Current-Ratio,Financial-Position,Uninterupted-Divs,Ten-year-growth,No-Earnings-Deficit
 3M Company,114.277B,20.17,8.31,1.84,false,true,true,true
 A.O. Smith Corp,10.947B,28.22,5.96,1.86,true,false,true,true
 Abbott Laboratories,212.725B,37.62,6.49,N/A,false,false,false,true
@@ -69,7 +69,7 @@ Bio-Rad Laboratories,18.815B,4.64,1.77,3.57,true,N/A,true,true
 Biogen Inc.,40.248B,13.86,3.77,2.12,N/A,N/A,true,true
 BlackRock,125.058B,23.74,3.54,N/A,N/A,false,true,true
 Boeing Company,137.027B,N/A,N/A,1.33,N/A,false,false,false
-Booking Holdings Inc,101.239B,1,712.56,20.64,3.56,false,true,true,true
+Booking Holdings Inc,101.239B,1,712.56,20.64,3.56,false,true,true
 BorgWarner,11.612B,20.76,1.81,1.62,N/A,false,true,true
 Boston Properties,17.067B,37.36,2.95,4.66,N/A,false,true,true
 Boston Scientific,61.935B,309.22,4.03,N/A,false,true,true,false
@@ -442,7 +442,7 @@ The Mosaic Company,13.357B,20.10,1.39,1.12,false,false,false,false
 The Travelers Companies,38.892B,13.98,1.38,0.38,false,false,true,true
 The Walt Disney Company,337.675B,N/A,4.01,1.31,N/A,false,true,false
 Thermo Fisher Scientific,184.808B,29.46,5.41,2.13,false,false,true,true
-TJX Companies Inc.,85.626B,1,014.29,14.66,1.46,false,false,true,true
+TJX Companies Inc.,85.626B,1,014.29,14.66,1.46,false,false,true
 Tractor Supply Company,21.916B,26.12,11.83,1.71,N/A,false,true,true
 Trane Technologies plc,41.564B,N/A,N/A,1.59,N/A,N/A,true,true
 TransDigm Group,33.565B,93.42,N/A,4.53,false,false,true,true
