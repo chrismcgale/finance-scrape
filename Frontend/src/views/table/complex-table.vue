@@ -427,6 +427,8 @@ import { getArticles, getPageviews, createArticle, updateArticle, defaultArticle
 import { IArticleData } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
+
+const config = require('./config.json'); 
 import Pagination from '@/components/Pagination/index.vue'
 
 const calendarTypeOptions = [
@@ -502,7 +504,7 @@ export default class extends Vue {
     this.listLoading = true
     console.log("GETTING DATA")
     const { col_names, rows } = await this.getData()
-    const {data} = await getArticles()
+    // const {data} = await getArticles()
 
 
     
@@ -515,7 +517,10 @@ export default class extends Vue {
   }
 
   async getData(){
-    const response = await fetch('http://localhost:5000/finacial_data?key='.concat("78a36aa06207dfae148c073190ba2468f7bde241c1c3db313204d6f5e40d1888b46c01301809d8c3"), {
+    console.log("API_KEY = ")
+    console.log(config['API_KEY'])
+    const response = await fetch('http://localhost:5000/finacial_data?key='.concat(
+      config['API_KEY']), {
       method : "GET"
     })
     
