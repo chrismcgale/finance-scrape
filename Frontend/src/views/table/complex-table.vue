@@ -88,7 +88,6 @@
       </el-checkbox>
     </div>
 
-
     <!-- TABLE BEGINS  --> 
     <el-table
       :key="tableKey"
@@ -105,7 +104,7 @@
         prop="id"
         sortable="true"
         align="center"
-        width="800"
+        width="300"
       >
         <template slot-scope="{row}">
           <span>{{ row.Name }}</span>
@@ -115,11 +114,11 @@
 
 
       <el-table-column
-        :label="$t('Market-Cap')"
+        :label="$t('Market Cap')"
         prop="id"
         sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
           <span>{{ row.Market_Cap }}</span>
@@ -128,35 +127,35 @@
 
 
       <el-table-column
-        :label="$t('Price-to-Earnings')"
+        :label="$t('Price to Earnings')"
         prop="id"
         sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Price_to_Earnings }}</span>
+          <span>{{ row.Price_to_Earnings <= 15 }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-        :label="$t('Price-to-Book')"
+        :label="$t('Price to Book')"
         prop="id"
         sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Price_to_Book }}</span>
+          <span>{{ row.Price_to_Book <= 1.5 }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-        :label="$t('Current-Ratio')"
+        :label="$t('Current Ratio')"
         prop="id"
         sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
           <span>{{ row.Current_Ratio }}</span>
@@ -164,14 +163,50 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('Financial-Position')"
+        :label="$t('Financial Position')"
         prop="id"
         sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Financial_Position }}</span>
+          <span>{{ row.Financial_Position && row.Current_Ratio > 2 }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('Earnings Stability')"
+        prop="id"
+        sortable="true"
+        align="center"
+        width="150"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.No_Earnings_Deficit_in_the_Past_Ten_Years }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('Dividend Record')"
+        prop="id"
+        sortable="true"
+        align="center"
+        width="150"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.Uninterupted_Divs }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('Earnings Growth')"
+        prop="id"
+        sortable="true"
+        align="center"
+        width="150"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.Ten_year_growth }}</span>
         </template>
       </el-table-column>
 
