@@ -10,9 +10,9 @@ class CompanyFinancialsModel(BaseModel):
         "  `Price_to_Earnings` FLOAT(10,4),"
         "  `Price_to_Book` FLOAT(10,4),"
         "  `Current_Ratio` FLOAT(10,4),"
-        "  `Financial_Position` BOOLEAN,"
-        "  `Uninterupted_Divs` BOOLEAN,"
-        "  `Ten_year_growth` BOOLEAN,"
+        "  `NWC_Gt_LTD` BOOLEAN,"
+        "  `Uninterupted_Divs_20_years` BOOLEAN,"
+        "  `EPS_Growth_gt_33` BOOLEAN,"
         "  `No_Earnings_Deficit_in_the_Past_Ten_Years` BOOLEAN,"
         "  PRIMARY KEY (`Name`)"
         ")"
@@ -29,9 +29,9 @@ class CompanyFinancialsModel(BaseModel):
             self.columns['Price_to_Earnings'] = Price_to_Earnings
             self.columns['Price_to_Book'] = Price_to_Book
             self.columns['Current_Ratio'] = Current_Ratio
-            self.columns['Financial_Position'] = Financial_Position
-            self.columns['Univterupted_Divs'] = Univterupted_Divs
-            self.columns['Ten_year_growth'] = Ten_year_growth
+            self.columns['NWC_Gt_LTD'] = Financial_Position
+            self.columns['Univterupted_Divs_20_Years'] = Univterupted_Divs
+            self.columns['Eps_Growth_Gt_33'] = Ten_year_growth
             self.columns['No_Earnings_Deficit_in_the_Past_Ten_Years'] = No_Earnings_Deficit_in_the_Past_Ten_Years
 
             try:
