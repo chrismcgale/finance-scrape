@@ -88,7 +88,6 @@
       </el-checkbox>
     </div>
 
-
     <!-- TABLE BEGINS  --> 
     <el-table
       :key="tableKey"
@@ -105,7 +104,7 @@
         prop="id"
         sortable="true"
         align="center"
-        width="800"
+        min-width="350"
       >
         <template slot-scope="{row}">
           <span>{{ row.Name }}</span>
@@ -115,63 +114,90 @@
 
 
       <el-table-column
-        :label="$t('Market-Cap')"
+        :label="$t('Market Cap')"
         prop="id"
-        sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
-        <template slot-scope="{row}">
-          <span>{{ row.Market_Cap }}</span>
+        <template v-if="row.Market_Cap[row.Market_Cap.length - 1] === 'T'" slot-scope="{row}">
+          <span>{{ "true" }}</span>
+        </template>
+        <template v-if="row.Market_Cap[row.Market_Cap.length - 1] === 'B'" slot-scope="{row}">
+          <span>{{ "true" }}</span>
+        </template>
+        <template v-else-if="row.Market_Cap[row.Market_Cap.length - 1] === 'M'" slot-scope="{row}">
+          <span v-if="parseFloat(row.Market_Cap.splice(-1)) > 345" >{{ "true" }}</span>
+          <span v-else>{{"false"}}</span>
         </template>
       </el-table-column>
 
 
       <el-table-column
-        :label="$t('Price-to-Earnings')"
+        :label="$t('Price to Earnings')"
         prop="id"
-        sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Price_to_Earnings }}</span>
+          <span v-if="row.Price_to_Earnings !== 'N/A'">{{ row.Price_to_Earnings <= 15 }}</span>
+          <span v-else>{{"N/A"}}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-        :label="$t('Price-to-Book')"
+        :label="$t('Price to Book')"
         prop="id"
-        sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Price_to_Book }}</span>
+          <span v-if="row.Price_to_Book !== 'N/A'">{{ row.Price_to_Book <= 1.5 }}</span>
+          <span v-else>{{"N/A"}}</span>
+        </template>
+      </el-table-column>
+
+
+      <el-table-column
+        :label="$t('Financial Position')"
+        prop="id"
+        align="center"
+        width="150"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.Financial_Position}}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-        :label="$t('Current-Ratio')"
+        :label="$t('Earnings Stability')"
         prop="id"
-        sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Current_Ratio }}</span>
+          <span>{{ row.No_Earnings_Deficit }}</span>
         </template>
       </el-table-column>
 
       <el-table-column
-        :label="$t('Financial-Position')"
+        :label="$t('Dividend Record')"
         prop="id"
-        sortable="true"
         align="center"
-        width="400"
+        width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Financial_Position }}</span>
+          <span>{{ row.Uninterupted_Divs }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('Earnings Growth')"
+        prop="id"
+        align="center"
+        width="150"
+      >
+        <template slot-scope="{row}">
+          <span>{{ row.Ten_year_growth }}</span>
         </template>
       </el-table-column>
 
@@ -443,6 +469,8 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc: { [key: string]: s
   acc[cur.key] = cur.displayName
   return acc
 }, {}) as { [key: string]: string }
+
+
 
 @Component({
   name: 'ComplexTable',
