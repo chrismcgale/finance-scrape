@@ -542,7 +542,7 @@ export default class extends Vue {
   async getData(){
     console.log("API_KEY = ")
     console.log(config['API_KEY'])
-    const response = await fetch('http://localhost:5000/finacial_data?key='.concat(
+    const response = await fetch('https://finace-scraper-backend.herokuapp.com/finacial_data?key='.concat(
       config['API_KEY']), {
       method : "GET"
     })
