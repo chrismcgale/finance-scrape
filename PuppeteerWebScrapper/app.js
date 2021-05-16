@@ -54,6 +54,7 @@ function sleep(ms) {
             //console.log(ticks.length);
             tickers.push(row.Symbol);
             tickers.push(row.Name);
+            tickers.push(row.Sector);
         })
         .on('end', () => {
             console.log('CSV file successfully processed');
@@ -70,7 +71,7 @@ function sleep(ms) {
             page.setDefaultNavigationTimeout(30000);
             page.on('console', consoleObj => console.log(consoleObj.text()));
 
-            for (i = 0; i < 1010; i += 2) {
+            for (i = 0; i < 1515; i += 3) {
                 try {
                     //Get tick and company name from constituents.csv
                     let tick = tickers[i].replace('.', '-');
@@ -214,14 +215,13 @@ function sleep(ms) {
                     } catch (error) {
                         fifth = ["N/A", "N/A"];
                     }
-                    const data = [name, first, second, third, fourth, fifth];
+                    let fin = third && !(tickers[i + 2] == "Industrials" && second[1] < 2);
+                    const data = [name, first, second, fin, fourth, fifth];
                     write_to_file(data);
                 } catch (error) {
                     console.error(error);
                 }
             }
-
-            //await page.close();
 
         }).catch(function (error) {
             console.error(error);

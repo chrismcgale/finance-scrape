@@ -1,6 +1,6 @@
 Name,Market_Cap,Price_to_Earnings,Price_to_Book,Current_Ratio,Financial_Position,Uninterupted_Divs,Ten_year_growth,No_Earnings_Deficit
 3M Company,114.277B,20.17,8.31,1.84,false,true,true,true
-A.O. Smith Corp,10.947B,28.22,5.96,1.86,true,false,true,true
+A.O. Smith Corp,10.947B,28.22,5.96,1.86,false,false,true,true
 Abbott Laboratories,212.725B,37.62,6.49,N/A,false,false,false,true
 AbbVie Inc.,196.779B,38.28,15.05,N/A,false,true,true,true
 Abiomed,14.507B,64.93,10.92,6.11,true,N/A,true,false
@@ -69,7 +69,7 @@ Bio-Rad Laboratories,18.815B,4.64,1.77,3.57,true,N/A,true,true
 Biogen Inc.,40.248B,13.86,3.77,2.12,N/A,N/A,true,true
 BlackRock,125.058B,23.74,3.54,N/A,N/A,false,true,true
 Boeing Company,137.027B,N/A,N/A,1.33,N/A,false,false,false
-Booking Holdings Inc,101.239B,1,712.56,20.64,3.56,false,true,true,true
+Booking Holdings Inc,101.239B,1,712.56,20.64,false,false,true,true
 BorgWarner,11.612B,20.76,1.81,1.62,N/A,false,true,true
 Boston Properties,17.067B,37.36,2.95,4.66,N/A,false,true,true
 Boston Scientific,61.935B,309.22,4.03,N/A,false,true,true,false
@@ -126,7 +126,7 @@ Corteva,36.114B,N/A,1.50,1.73,N/A,N/A,false,false
 Costco Wholesale Corp.,164.662B,38.05,10.52,0.99,false,false,true,true
 Crown Castle,81.674B,84.33,9.09,0.63,N/A,true,true,false
 CSX Corp.,76.308B,28.55,5.80,2.39,false,true,true,true
-Cummins Inc.,36.935B,20.99,4.62,1.88,true,true,true,true
+Cummins Inc.,36.935B,20.99,4.62,1.88,false,true,true,true
 CVS Health,100.277B,13.98,1.44,0.91,N/A,true,false,false
 D. R. Horton,35.432B,11.39,2.73,5.29,false,false,true,true
 Danaher Corp.,181.13B,39.89,4.87,2.05,false,false,true,true
@@ -381,7 +381,7 @@ PulteGroup,15.547B,10.61,2.33,5.43,false,N/A,true,false
 PVH Corp.,8.055B,N/A,1.70,1.53,N/A,N/A,false,false
 Qorvo,21.313B,45.27,4.73,3.78,false,N/A,false,false
 Qualcomm,156.566B,19.88,21.11,2.02,false,false,false,false
-Quanta Services Inc.,13.481B,31.48,3.08,1.68,true,false,true,true
+Quanta Services Inc.,13.481B,31.48,3.08,1.68,false,false,true,true
 Quest Diagnostics,17.229B,10.01,2.56,1.76,false,false,true,true
 Ralph Lauren Corporation,9.746B,N/A,3.62,2.55,N/A,false,false,false
 Raymond James Financial,18.01B,17.47,2.44,N/A,false,false,true,true
@@ -442,7 +442,7 @@ The Mosaic Company,13.357B,20.10,1.39,1.12,false,false,false,false
 The Travelers Companies,38.892B,13.98,1.38,0.38,false,false,true,true
 The Walt Disney Company,337.675B,N/A,4.01,1.31,N/A,false,true,false
 Thermo Fisher Scientific,184.808B,29.46,5.41,2.13,false,false,true,true
-TJX Companies Inc.,85.626B,1,014.29,14.66,1.46,false,false,true,true
+TJX Companies Inc.,85.626B,1,014.29,14.66,false,false,false,true
 Tractor Supply Company,21.916B,26.12,11.83,1.71,N/A,false,true,true
 Trane Technologies plc,41.564B,N/A,N/A,1.59,N/A,N/A,true,true
 TransDigm Group,33.565B,93.42,N/A,4.53,false,false,true,true
