@@ -119,14 +119,9 @@
         align="center"
         width="150"
       >
-        <template v-if="row.Market_Cap[row.Market_Cap.length - 1] === 'T'" slot-scope="{row}">
-          <span>{{ "true" }}</span>
-        </template>
-        <template v-if="row.Market_Cap[row.Market_Cap.length - 1] === 'B'" slot-scope="{row}">
-          <span>{{ "true" }}</span>
-        </template>
-        <template v-else-if="row.Market_Cap[row.Market_Cap.length - 1] === 'M'" slot-scope="{row}">
-          <span v-if="parseFloat(row.Market_Cap.splice(-1)) > 345" >{{ "true" }}</span>
+        <template slot-scope="{row}">
+          <span v-if="row.Market_Cap[row.Market_Cap.length - 1] !== 'M'">{{ "true" }}</span>
+          <span v-else-if="parseFloat(row.Market_Cap.splice(-1)) >= 345">{{ "true" }}</span>
           <span v-else>{{"false"}}</span>
         </template>
       </el-table-column>
