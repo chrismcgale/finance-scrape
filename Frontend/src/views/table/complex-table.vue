@@ -120,9 +120,28 @@
         width="150"
       >
         <template slot-scope="{row}">
-          <span v-if="row.Market_Cap[row.Market_Cap.length - 1] !== 'M'">{{ "true" }}</span>
-          <span v-else-if="parseFloat(row.Market_Cap.splice(-1)) >= 345">{{ "true" }}</span>
-          <span v-else>{{"false"}}</span>
+          <el-button v-if="row.Market_Cap === 'N/A'"
+            size="mini"
+            > {{ 'N/A' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.Market_Cap[row.Market_Cap.length - 1] !== 'M'"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else-if="parseFloat(row.Market_Cap.splice(-1)) >= 345"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              type="danger"
+              > {{ 'NO' }} 
+          </el-button>
         </template>
       </el-table-column>
 
@@ -134,8 +153,22 @@
         width="150"
       >
         <template slot-scope="{row}">
-          <span v-if="row.Price_to_Earnings !== 'N/A'">{{ row.Price_to_Earnings <= 15 }}</span>
-          <span v-else>{{"N/A"}}</span>
+          <el-button v-if="row.Price_to_Earnings === 'N/A'"
+            size="mini"
+            > {{ 'N/A' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.Price_to_Earnings <= 15"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              type="danger"
+              > {{ 'NO' }} 
+          </el-button>
         </template>
       </el-table-column>
 
@@ -146,8 +179,22 @@
         width="150"
       >
         <template slot-scope="{row}">
-          <span v-if="row.Price_to_Book !== 'N/A'">{{ row.Price_to_Book <= 1.5 }}</span>
-          <span v-else>{{"N/A"}}</span>
+          <el-button v-if="row.Price_to_Earnings === 'N/A'"
+            size="mini"
+            > {{ 'N/A' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.Price_to_Book <= 1.5"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              type="danger"
+              > {{ 'NO' }} 
+          </el-button>
         </template>
       </el-table-column>
 
@@ -159,7 +206,22 @@
         width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Financial_Position}}</span>
+          <el-button v-if="row.Price_to_Earnings === 'N/A'"
+            size="mini"
+            > {{ 'N/A' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.Financial_Position === 'true'"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              type="danger"
+              > {{ 'NO' }} 
+          </el-button>
         </template>
       </el-table-column>
 
@@ -170,7 +232,22 @@
         width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.No_Earnings_Deficit }}</span>
+          <el-button v-if="row.No_Earnings_Deficit === 'N/A'"
+            size="mini"
+            > {{ 'N/A' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.No_Earnings_Deficit === 'true'"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              type="danger"
+              > {{ 'NO' }} 
+          </el-button>
         </template>
       </el-table-column>
 
@@ -181,7 +258,22 @@
         width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Uninterupted_Divs }}</span>
+          <el-button v-if="row.Uninterupted_Divs === 'N/A'"
+            size="mini"
+            > {{ 'N/A' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.Uninterupted_Divs === 'true'"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              type="danger"
+              > {{ 'NO' }} 
+          </el-button>
         </template>
       </el-table-column>
 
@@ -192,7 +284,22 @@
         width="150"
       >
         <template slot-scope="{row}">
-          <span>{{ row.Ten_year_growth }}</span>
+          <el-button v-if="row.Ten_year_growth === 'N/A'"
+            size="mini"
+            > {{ 'N/A' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.Ten_year_growth === 'true'"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              type="danger"
+              > {{ 'NO' }} 
+          </el-button>
         </template>
       </el-table-column>
 
