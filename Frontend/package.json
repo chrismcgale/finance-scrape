@@ -10,7 +10,8 @@
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
     "svg": "vsvg -s ./src/icons/svg -t ./src/icons/components --ext ts --es6",
-    "mock": "cd mock && ts-node-dev mock-server.ts"
+    "mock": "cd mock && ts-node-dev mock-server.ts",
+    "start": "vue-cli-service serve"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.6",
