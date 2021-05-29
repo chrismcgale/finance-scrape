@@ -1,4 +1,9 @@
 <template>
+  <style>
+    el-button .comment { display: none; }
+    el-button:hover .replies { display: none; }
+    el-button:hover .comment { display: inline; }
+  </style>
   <div class="app-container">
     <h2>Financial Data Table</h2>
     <div class="filter-container">
@@ -126,21 +131,45 @@
           </el-button>
           <el-button
               v-else-if="row.Market_Cap[row.Market_Cap.length - 1] !== 'M'"
+              class="replies"
+              size="mini"
+              type="success"
+              > {{ 'YES' }} 
+          </el-button>
+            <el-button
+              v-else-if="row.Market_Cap[row.Market_Cap.length - 1] !== 'M'"
+              class="comment"
+              size="mini"
+              type="success"
+              > {{ row.Market_Cap }} 
+          </el-button>
+          <el-button
+              v-else-if="parseFloat(row.Market_Cap.splice(-1)) >= 345"
+              class="replies"
               size="mini"
               type="success"
               > {{ 'YES' }} 
           </el-button>
           <el-button
               v-else-if="parseFloat(row.Market_Cap.splice(-1)) >= 345"
+              class="comment"
               size="mini"
               type="success"
-              > {{ 'YES' }} 
+              > {{ row.Market_Cap }} 
           </el-button>
           <el-button
               v-else
+              class="replies"
               size="mini"
               type="danger"
               > {{ 'NO' }} 
+          </el-button>
+            <el-button
+              v-else
+              class="comment"
+              size="mini"
+              type="danger"
+              > {{ row.Market_Cap }} 
           </el-button>
         </template>
       </el-table-column>
@@ -159,9 +188,17 @@
           </el-button>
           <el-button
               v-else-if="row.Price_to_Earnings <= 15"
+              class="replies"
               size="mini"
               type="success"
               > {{ 'YES' }} 
+          </el-button>
+          <el-button
+              v-else-if="row.Price_to_Earnings <= 15"
+              class="comment"
+              size="mini"
+              type="success"
+              > {{ row.Price_to_Earnings }} 
           </el-button>
           <el-button
               v-else
