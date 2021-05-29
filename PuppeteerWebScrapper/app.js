@@ -195,6 +195,8 @@ function sleep(ms) {
                             let positive = true;
                             let past = 0;
                             let recent = 0;
+                            
+                            if (eps.length < 10) return false;
 
                             for (j = 0; j < 11; j += 1) {
                                 eps[j] = parseFloat(eps[j].substring(1));
