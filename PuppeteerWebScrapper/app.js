@@ -1,64 +1,17 @@
 const fs = require('fs');
-//const $ = require('jquery');
 const puppeteer = require('puppeteer');
-const fortunes = './constituents.csv';
-const csvParser = require('csv-parser');
-//const { clearLine } = require('readline');
-//const { sleep } = require('constants');
-
+const parse = require("./parser.js");
+const write_to_file = require('./write');
 
 var yahoo = "https://finance.yahoo.com/quote/";
 var dividends = "https://dividendhistory.org/payout/";
 var nas = "https://www.nasdaq.com/market-activity/stocks/";
 var earnings = "https://www.macrotrends.net/stocks/charts/";
 
-function write_to_file(data) {
-    string = "";
-    for (var it = 0; it < 6; ++it) {
-        if (it == 5) string += data[it];
-        else string += data[it] + ',';
-    }
-    string += '\n'
-    fs.appendFile('./data.csv', string, function (err) {
-        if (err) throw err;
-    });
-}
-
-function clear(filename) {
-    fs.writeFile('./data.csv', '', function (err) {
-        if (err) throw err;
-    });
-    let string = "Name,Market-Cap,Price-to-Earnings,Price-to-Book,Current-Ratio,Financial-Position,Uninterupted-Divs,Ten-year-growth,No-Earnings-Deficit" + '\n';
-    fs.appendFile('./data.csv', string, function (err) {
-        if (err) throw err;
-    });
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 
 
 (async function main() {
-    // open file stream
-
-    //If Starting from the middle comment out this line and set i to 2 * row - 4
-    //clear('./data');
-
-
-    let tickers = [];
-    let readStream = fs.createReadStream(fortunes)
-        .pipe(csvParser())
-        .on('data', (row) => {
-            //console.log(ticks.length);
-            tickers.push(row.Symbol);
-            tickers.push(row.Name);
-            tickers.push(row.Sector);
-        })
-        .on('end', () => {
-            console.log('CSV file successfully processed');
-        });
+    let tickers = parse();
 
    await puppeteer.launch({
             headless: false,
@@ -69,7 +22,8 @@ function sleep(ms) {
             // create new page
             const page = await browser.newPage();
             page.setDefaultNavigationTimeout(30000);
-            page.on('console', consoleObj => console.log(consoleObj.text()));
+            //Uncomment if you want console msgs
+            //page.on('console', consoleObj => console.log(consoleObj.text()));
 
             for (i = 0; i < 1515; i += 3) {
                 try {
@@ -237,12 +191,5 @@ class PageContactError extends Error {
     constructor(message) {
         super(message); // (1)
         this.name = "PageContactError"; // (2)
-    }
-}
-
-class BadRowError extends Error {
-    constructor(message) {
-        super(message); // (1)
-        this.name = "BadRowError"; // (2)
     }
 }

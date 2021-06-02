@@ -1,9 +1,5 @@
 <template>
-  <style>
-    el-button .comment { display: none; }
-    el-button:hover .replies { display: none; }
-    el-button:hover .comment { display: inline; }
-  </style>
+
   <div class="app-container">
     <h2>Financial Data Table</h2>
     <div class="filter-container">
@@ -92,7 +88,6 @@
         {{ $t('table.reviewer') }}
       </el-checkbox>
     </div>
-
     <!-- TABLE BEGINS  --> 
     <el-table
       :key="tableKey"
@@ -115,9 +110,6 @@
           <span>{{ row.Name }}</span>
         </template>
       </el-table-column>
-
-
-
       <el-table-column
         :label="$t('Market Cap')"
         prop="id"
@@ -140,8 +132,7 @@
               v-else-if="row.Market_Cap[row.Market_Cap.length - 1] !== 'M'"
               class="comment"
               size="mini"
-              type="success"
-              > {{ row.Market_Cap }} 
+              type="success"> {{ row.Market_Cap }} 
           </el-button>
           <el-button
               v-else-if="parseFloat(row.Market_Cap.splice(-1)) >= 345"
@@ -173,8 +164,6 @@
           </el-button>
         </template>
       </el-table-column>
-
-
       <el-table-column
         :label="$t('Price to Earnings')"
         prop="id"
@@ -686,7 +675,7 @@ export default class extends Vue {
   async getData(){
     console.log("API_KEY = ")
     console.log(config['API_KEY'])
-    const response = await fetch('https://finace-scraper-backend.herokuapp.com/finacial_data?key='.concat(
+    const response = await fetch('http://localhost:5000/finacial_data?key='.concat(
       config['API_KEY']), {
       method : "GET"
     })
