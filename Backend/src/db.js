@@ -1,21 +1,63 @@
-const { MongoClient } = require('mongodb');
+/** Import Dotenv module */
+require('dotenv').config();
+
 const uri = "mongodb+srv://chrisMcG:4cGy5npbmWBWBAxN@cluster0.bk9osym.mongodb.net/?retryWrites=true&w=majority";
 
-const query = async () => {
-  const client = new MongoClient(uri);
+/** Import Mongoose module */
+const mongoose = require('mongoose');
 
-  try {
-    await client.connect();
+/** URI for connection */
+const uri = process.env.APP_ENV === 'devlocal'
+  ? `mongodb://${
+    process.env.MONGOHOST
+  }:${
+    process.env.MONGOPORT
+  }/${
+    process.env.MONGODB}`
+  : `mongodb://${
+    process.env.MONGOUSER
+  }:${
+    process.env.MONGOPASSWORD
+  }@${
+    process.env.MONGOHOST
+  }:${
+    process.env.MONGOPORT
+  }/${
+    process.env.MONGODB
+  }?${process.env.APP_ENV === 'production'
+    ? 'ssl=true'
+    : 'authSource=admin&replicaSet=replset&ssl=true'}`;
 
-    const collection = client.db("fin-scrape").collection("constituents");
+/**
+ * Connects to MongoDB using Mongoose
+ * @return {string}
+ */
+function connect() {
+  return mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  });
+}
 
-    return collection;
-  }  catch (err) {
-    console.log(err);
-  }
-};
+/**
+ * Checks if a successful connection was established to the DB
+ */
+function checkConnection() {
+  const { connection } = mongoose;
+  connection.once('open', () => {
+    logger.info('MongoDB database connection established successfully!');
+  });
+}
 
+/**
+ * Disconnects from the DB
+ * @return {string}
+ * */
+function disconnect() {
+  return mongoose.disconnect();
+}
 
 module.exports = {
-  query,
+  mongoose, connect, checkConnection, disconnect,
 };

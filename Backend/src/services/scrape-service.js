@@ -1,5 +1,8 @@
 const puppeteer = require('puppeteer');
 
+/** Company model */
+const CompanyModel = require('../models/Company');
+
 const parse = require("./parser.js");
 const { query } = require('../query');
 
@@ -15,9 +18,9 @@ const browserDefault = {
 }
 
 
-const getAllCompanyData = () => query().find({});
+const getAllCompanyData = () => CompanyModel.find({});
 
-const updateCompanies = (updates) = () => query.bulkWrite(updates);
+const updateCompanies = (updates) = () => updates.forEach((update) => CompanyModel.findOneAndUpdate(update._id, update));
 
 const getYahooData = async (browser, { Symbol }) => {
     // create new page
