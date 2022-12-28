@@ -124,7 +124,7 @@ const scrapeCompanyData = async () => {
         companyData.forEach((comp) => {
             try {
                 //Get tick and company name from constituents.csv
-                const { _id } = comp
+                const { _id, Name, Symbol } = comp
 
                 // Yahoo Data
                const yahooData = getYahooData(browser, comp);
@@ -142,7 +142,7 @@ const scrapeCompanyData = async () => {
 
 
                 let fin = third && !(tickers[i + 2] == "Industrials" && second[1] < 2);
-                updates.push(_id, yahooData, nasdaqData, dividendData, earningsData);
+                updates.push(_id, Name, Symbol, yahooData, nasdaqData, dividendData, earningsData);
             } catch (error) {
                 console.error(`Company: ${_id}: failed with err: ${err}`);
             }
