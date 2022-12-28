@@ -1,0 +1,28 @@
+@import './base/settings';
+@import './base/base';
+
+
+hr {
+    margin: 1rem 0;
+  }
+  
+  .list-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .list-header h3.title {
+    margin-bottom: 0px;
+  }
+  
+  .list-header .search {
+    display: flex;
+    align-items: center;
+  }
+  .list-header .search .label {
+    margin-bottom: 0px;
+    margin-right: 10px;
+  }
+  

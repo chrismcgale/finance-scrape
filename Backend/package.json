@@ -1,0 +1,27 @@
+{
+    "name": "location-service",
+    "version": "0.0.1",
+    "author": "CWM",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "jest --coverage"
+    },
+    "jest": {
+        "testEnvironment": "node"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "fs": "^0.0.1-security",
+        "helmet": "^6.0.0",
+        "helmet-csp": "^3.4.0",
+        "mongodb": "^4.13.0",
+        "ngeohash": "^0.6.3",
+        "node-cron": "^3.0.2",
+        "pg": "^8.8.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    }
+}
